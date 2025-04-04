@@ -18,24 +18,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Link from "next/link";
-
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1, "Required"),
-});
+import { loginSchema } from "../schemas";
+import { useLogin } from "../api/useLogin";
+import { Loader2 } from "lucide-react";
 
 export default function SignInCard() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate, isPending } = useLogin();
+
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+    mutate({
+      json: values,
+    });
   };
+
+
   return (
     <Card className="w-full h-full md:w-[487px] border-none shadow-none">
       <CardHeader className="flex items-center justify-center text-center p-7">
@@ -80,7 +84,13 @@ export default function SignInCard() {
               )}
             />
             <Button disabled={false} size={"lg"} className="w-full">
-              Login
+              {
+                isPending ? (
+                  <Loader2 className="mr-2 animate-spin"/>
+                ) : (
+                  "Login"
+                )
+              }
             </Button>
           </form>
         </Form>

@@ -1,6 +1,13 @@
-import SignUpCard from "@/features/auth/components/SignUpCard";
 import React from "react";
+import SignUpCard from "@/features/auth/components/SignUpCard";
+import { getCurrent } from "@/features/auth/action";
+import { redirect } from "next/navigation";
 
-export default function SignUpPage() {
+export default async function SignUpPage() {
+  const user = await getCurrent();
+
+  if (user) {
+    redirect("/");
+  }
   return <SignUpCard />;
 }
