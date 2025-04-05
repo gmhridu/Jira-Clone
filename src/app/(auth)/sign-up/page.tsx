@@ -1,6 +1,6 @@
 import React from "react";
 import SignUpCard from "@/features/auth/components/SignUpCard";
-import { getCurrent } from "@/features/auth/action";
+import { getCurrent } from "@/features/auth/queries";
 import { redirect } from "next/navigation";
 
 export default async function SignUpPage() {

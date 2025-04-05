@@ -39,7 +39,6 @@ export default function SignInCard() {
     });
   };
 
-
   return (
     <Card className="w-full h-full md:w-[487px] border-none shadow-none">
       <CardHeader className="flex items-center justify-center text-center p-7">
@@ -84,13 +83,14 @@ export default function SignInCard() {
               )}
             />
             <Button disabled={false} size={"lg"} className="w-full">
-              {
-                isPending ? (
-                  <Loader2 className="mr-2 animate-spin"/>
-                ) : (
-                  "Login"
-                )
-              }
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 animate-spin" />
+                  <span>Login...</span>
+                </>
+              ) : (
+                "Login"
+              )}
             </Button>
           </form>
         </Form>

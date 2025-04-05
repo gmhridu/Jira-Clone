@@ -119,7 +119,14 @@ export default function SignUpCard() {
               )}
             />
             <Button disabled={false} size={"lg"} className="w-full">
-              {isPending ? <Loader2 className="mr-2 animate-spin" /> : "Login"}
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 animate-spin" />
+                  <span>Registering...</span>
+                </>
+              ) : (
+                "Register"
+              )}
             </Button>
           </form>
         </Form>

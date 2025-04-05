@@ -25,8 +25,10 @@ export const useRegister = () => {
     },
     onSuccess: () => {
       router.refresh();
+      router.push("/");
       queryClient.invalidateQueries({ queryKey: ["current"] });
-      toast.success("Registration successful!");
+      queryClient.invalidateQueries({ queryKey: ["workspaces"] });
+      toast.success("Logged in successfully!");
     },
     onError: () => {
       toast.error("Failed to register");

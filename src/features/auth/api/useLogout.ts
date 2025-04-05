@@ -22,7 +22,8 @@ export const useLogout = () => {
     },
     onSuccess: () => {
       router.refresh();
-      queryClient.invalidateQueries({ queryKey: ["current"] });
+      router.push("/sign-in");
+      queryClient.removeQueries({ queryKey: ["current"] });
       toast.success("Logged out successfully!");
     },
     onError: () => {

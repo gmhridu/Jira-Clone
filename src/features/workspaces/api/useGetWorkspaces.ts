@@ -11,9 +11,17 @@ export const useGetWorkSpaces = () => {
         throw new Error("Failed to retrieve workspaces");
       }
 
-      const { data } = await response.json();
+      try {
+        const json = await response.json();
 
-      return data;
+        if ("data" in json) {
+          return json.data ?? null;
+        } else {
+          return null;
+        }
+      } catch {
+        return null;
+      }
     },
   });
 

@@ -23,7 +23,9 @@ export const useLogin = () => {
     },
     onSuccess: () => {
       router.refresh();
+      router.push("/");
       queryClient.invalidateQueries({ queryKey: ["current"] });
+      queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       toast.success("Logged in successfully!");
     },
     onError: () => {
