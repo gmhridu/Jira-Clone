@@ -188,6 +188,72 @@ const app = new Hono()
         data: workspace,
       });
     }
-  );
+  )
+  .delete("/:workspaceId", sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const user = c.get("user");
 
+    const { workspaceId } = c.req.param();
+
+    const member = await getMember({
+      databases,
+      workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member || member.role !== MemberRole.ADMIN) {
+      return c.json(
+        {
+          success: false,
+          message: "Unauthorized. Only administrators can delete workspaces.",
+        },
+        401
+      );
+    }
+
+    await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
+
+    return c.json({
+      success: true,
+      message: "Workspace deleted successfully!",
+      data: { $id: workspaceId },
+    });
+  })
+  .post("/:workspaceId/reset-invite-code", sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const user = c.get("user");
+
+    const { workspaceId } = c.req.param();
+
+    const member = await getMember({
+      databases,
+      workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member || member.role !== MemberRole.ADMIN) {
+      return c.json(
+        {
+          success: false,
+          message: "Unauthorized. Only administrators can delete workspaces.",
+        },
+        401
+      );
+    }
+
+    const workspace = await databases.updateDocument(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      workspaceId,
+      {
+        inviteCode: generateInviteCode(6),
+      }
+    );
+
+    return c.json({
+      success: true,
+      message: "Workspace deleted successfully!",
+      data: workspace,
+    });
+  });
 export default app;
