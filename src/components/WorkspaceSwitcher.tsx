@@ -26,20 +26,12 @@ export const WorkspaceSwitcher = () => {
     isFetching,
     isRefetching,
   } = useGetWorkSpaces();
+  const isLoadingState = isLoading || isPending || isFetching || isRefetching;
   const { open } = useCreateWorkspaceModal();
 
   const onSelect = (id: string) => {
     router.push(`/workspaces/${id}`);
   };
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="flex items-center h-full">
-  //       <Loader2 className="mr-2 animate-spin text-neutral-800" />
-  //       <p className="text-xs text-neutral-900">Loading workspaces...</p>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -50,7 +42,7 @@ export const WorkspaceSwitcher = () => {
           className="size-5 text-neutral-500 cursor-pointer hover:opacity-75 transition"
         />
       </div>
-      {isLoading || isPending || isFetching || isRefetching ? (
+      {isLoadingState ? (
         <div className="w-full bg-neutral-200 font-medium p-3 cursor-pointer">
           <div className="flex items-center h-full">
             <Loader2 className="mr-2 animate-spin text-neutral-800" />
