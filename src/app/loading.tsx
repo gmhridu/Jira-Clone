@@ -1,7 +1,9 @@
+"use client";
+
 import { Loader2 } from "lucide-react";
 import React from "react";
 
-export default function DashboardLoading() {
+export default function LoadingPage() {
   return (
     <div className="h-screen flex items-center justify-center">
       <Loader2 className="size-6 animate-spin" />
