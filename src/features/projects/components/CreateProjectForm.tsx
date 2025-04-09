@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 import { useCreateProject } from "../api/useCreateProject";
 import { createProjectSchema } from "../schemas";
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
-import { useCreateProjectModal } from "../hooks/useCreateProjectModal";
+import { useRouter } from "next/navigation";
 
 interface CreateProjectFormProps {
   onCancel?: () => void;
@@ -32,10 +32,8 @@ interface CreateProjectFormProps {
 
 export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
   const workspaceId = useWorkspaceId();
-  // const router = useRouter();
+  const router = useRouter();
   const { mutate, isPending } = useCreateProject();
-
-  const { close } = useCreateProjectModal();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -66,15 +64,14 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     mutate(
       { form: finalValues },
       {
-        onSuccess: () => {
-          form.reset();
-          close();
-          // if ("data" in response) {
-          //   const { data } = response;
+        onSuccess: (response) => {
+          if ("data" in response) {
+            const { data } = response;
 
-          //   form.reset();
-          //   router.push(`/projects/${data.$id}`);
-          // }
+            form.reset();
+            router.refresh();
+            router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
+          }
         },
       }
     );

@@ -1,6 +1,10 @@
+import { Button } from "@/components/ui/button";
 import { getCurrent } from "@/features/auth/queries";
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar";
 import { getProject } from "@/features/projects/queries";
+import { TaskViewSwitcher } from "@/features/tasks/components/TaskViewSwitcher";
+import { PenBoxIcon } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -36,7 +40,18 @@ export default async function ProjectIdPage({ params }: ProjectIdPageProps) {
           />
           <p className="text-lg font-semibold">{initialValues.name}</p>
         </div>
+        <div>
+          <Button variant={"secondary"} size={"sm"} asChild>
+            <Link
+              href={`/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}/settings`}
+            >
+              <PenBoxIcon className="size-4 mr-2" />
+              Edit Project
+            </Link>
+          </Button>
+        </div>
       </div>
+      <TaskViewSwitcher />
     </div>
   );
 }
