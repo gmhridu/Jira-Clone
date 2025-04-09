@@ -4,20 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/rpc";
 
 interface UseGetTaskProps {
-  workspaceId: string;
-  
+  taskId: string;
 }
 
-export const useGetTask = ({ workspaceId }: UseGetTaskProps) => {
+export const useGetTask = ({ taskId }: UseGetTaskProps) => {
   const query = useQuery({
-    queryKey: ["tasks", workspaceId],
+    queryKey: ["task", taskId],
     queryFn: async () => {
-      const response = await client.api.tasks.$get({
-        query: { workspaceId },
+      const response = await client.api.tasks[":taskId"].$get({
+        param: { taskId },
       });
 
       if (!response) {
-        throw new Error("Failed to retrieve tasks");
+        throw new Error("Failed to retrieve task");
       }
 
       try {
